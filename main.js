@@ -25,19 +25,19 @@ app.post('/ms/webhook/received', async (req, res) => {
   });
 });
 
-app.post('/ms/webhook/sent', async (req, res) => {
-  const event = req.body.type;
-  const data = req.body;
+// app.post('/ms/webhook/sent', async (req, res) => {
+//   const event = req.body.type;
+//   const data = req.body;
 
-  console.log("sent ", data);
-  await axios.post("http://platform.lenna.test/app/public/api/webhook/email/set-message-id", data)
-    .then(function (res) {
-      console.log("Message ID updated.");
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-});
+//   console.log("sent ", data);
+//   await axios.post("http://platform.lenna.test/app/public/api/webhook/email/set-message-id", data)
+//     .then(function (res) {
+//       console.log("Message ID updated.");
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// });
 
 app.listen(port, () => {
   console.log('payload');
