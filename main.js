@@ -8,8 +8,10 @@ const port = 8080;
 
 app.use(bodyParser.json({limit: '50mb'}));
 
-app.get('/', () => {
-  return "Ready to rock n roll";
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Ready to rock n roll',
+  });
 })
 app.post('/ms/webhook/received', async (req, res) => {
   const event = req.body.type;
