@@ -12,17 +12,14 @@ app.post('/ms/webhook/received', async (req, res) => {
   const event = req.body.type;
   const data = req.body;
 
-  await axios.post("https://staging.lenna.ai/app/public/api/webhook/email/received", data)
+  await axios.post("http://platform.lenna.test/app/public/api/webhook/email/received", data)
     .then(function (res) {
-    console.log("Success ");
+      res.status(200).end();
     })
     .catch(function (error) {
-    console.log(error);
-  });
+      console.log(error);
+    });
 
-  res.status(200).json({
-    message: 'success',
-  });
 });
 
 // app.post('/ms/webhook/sent', async (req, res) => {
