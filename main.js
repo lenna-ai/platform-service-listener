@@ -19,12 +19,13 @@ app.post('/ms/webhook/received', async (req, res) => {
 
   await axios.post("http://platform.lenna.test/app/public/api/webhook/email/received", data)
     .then(function (res) {
-      res.status(200).end();
+      console.log(res);
     })
     .catch(function (error) {
       console.log(error);
     });
-
+  
+  res.status(200).end();
 });
 
 // app.post('/ms/webhook/sent', async (req, res) => {
