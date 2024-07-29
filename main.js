@@ -19,7 +19,7 @@ amqp.connect('amqps://txnploij:HX2L2iwb1K8SO4WG2XbU9X4VthrBTXeM@armadillo.rmq.cl
       ch.consume(que, function(msg) {
         var secs = msg.content.toString().split('.').length - 1;
         setTimeout(function() {
-          console.log(" [x] Done");
+          console.log(" [x] Done", msg);
         }, secs * 2000);
       });
     })
