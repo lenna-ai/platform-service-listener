@@ -1,46 +1,29 @@
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const amqp = require('amqplib') // Import library amqp
 const {stringify} = require('flatted');
 
 const app = express();
 const port = 8080;
-
 app.use(bodyParser.json({limit: '50mb'}));
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Ready to rock n roll',
-  });
-})
-app.post('/ms/webhook/received', async (req, res) => {
-  const event = req.body.type;
-  const data = req.body;
-
-  await axios.post("http://platform.lenna.test/app/public/api/webhook/email/received", data)
-    .then(function (res) {
-      console.log(res);
+amqp.connect('amqps://txnploij:HX2L2iwb1K8SO4WG2XbU9X4VthrBTXeM@armadillo.rmq.cloudamqp.com/txnploij')
+  .then(async conn=> {
+    return conn.createChannel().then(ch => {
+      // Deklarasi antrian
+      var que = 'broadcast.email.postmark';
+      ch.assertQueue(que, { durable: true })
+      ch.prefetch(1);
+      console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", que);
+      ch.consume(que, function(msg) {
+        var secs = msg.content.toString().split('.').length - 1;
+        setTimeout(function() {
+          console.log(" [x] Done");
+        }, secs * 2000);
+      });
     })
-    .catch(function (error) {
-      console.log(error);
-    });
-  
-  res.status(200).end();
-});
-
-// app.post('/ms/webhook/sent', async (req, res) => {
-//   const event = req.body.type;
-//   const data = req.body;
-
-//   console.log("sent ", data);
-//   await axios.post("http://platform.lenna.test/app/public/api/webhook/email/set-message-id", data)
-//     .then(function (res) {
-//       console.log("Message ID updated.");
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
-// });
+}).catch(console.warn);
 
 app.listen(port, () => {
   console.log('payload');
